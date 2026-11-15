@@ -13,7 +13,8 @@
 }
 
 .project,
-.challenge {
+.challenge,
+.sources {
   font-size: 0.68rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -26,6 +27,15 @@
 .challenge {
   color: var(--color-text-dim);
   text-align: center;
+}
+
+.sources {
+  color: var(--color-text-muted);
+  transition: color var(--t-fast) var(--ease-out);
+}
+
+.sources:hover {
+  color: var(--color-accent-soft);
 }
 
 .github {
@@ -52,5 +62,10 @@
   .challenge {
     order: 1;
     flex-basis: 100%;
+  }
+
+  .sources,
+  .github {
+    order: 2;
   }
 }

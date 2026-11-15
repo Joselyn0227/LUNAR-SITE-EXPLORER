@@ -5,6 +5,7 @@ import { Challenge } from "./pages/Challenge";
 import { Solution } from "./pages/Solution";
 import { About } from "./pages/About";
 import { Demo } from "./pages/Demo";
+import { Sources } from "./pages/Sources";
 
 export default function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ export default function AppRoutes() {
         <Route path="solucion" element={<Solution />} />
         <Route path="acerca-de" element={<About />} />
         <Route path="demo" element={<Demo />} />
+        <Route path="fuentes" element={<Sources />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

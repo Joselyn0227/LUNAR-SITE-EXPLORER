@@ -295,6 +295,82 @@
   font-size: 0.57rem;
 }
 
+.methodology {
+  display: grid;
+  gap: 1.25rem;
+  padding-block: clamp(1.5rem, 4vw, 3rem);
+  border-top: 1px solid var(--color-border);
+}
+
+.methodologyHeading {
+  display: grid;
+  justify-items: start;
+  gap: 0.55rem;
+}
+
+.methodologyHeading h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.3vw, 1.8rem);
+  font-weight: 500;
+}
+
+.methodologyHeading p,
+.technicalDetails p {
+  max-width: 75ch;
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.processSteps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  counter-reset: process;
+}
+
+.processSteps li {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 0.55rem;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: rgba(4, 12, 20, 0.72);
+}
+
+.processSteps li > span {
+  color: var(--color-accent-soft);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+}
+
+.processSteps h3,
+.technicalDetails h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.processSteps p {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.technicalDetails {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  padding: 1rem 1.1rem;
+  border-left: 2px solid var(--color-accent);
+  background: rgba(108, 196, 245, 0.035);
+}
+
+.methodologyNote {
+  color: var(--color-text-dim) !important;
+}
+
 @media (max-width: 1050px) {
   .workspace {
     grid-template-columns: minmax(190px, 220px) minmax(0, 1fr);
@@ -340,6 +416,10 @@
   .footerLine {
     flex-direction: column;
     gap: 0.3rem;
+  }
+
+  .processSteps {
+    grid-template-columns: 1fr;
   }
 
   .marker {

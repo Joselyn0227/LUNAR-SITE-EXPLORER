@@ -54,6 +54,7 @@ h1, h2, h3 {
   font-family: var(--font-body);
   font-weight: 600;
   line-height: 1.15;
+  color: var(--color-text);
 }
 
 ::selection {

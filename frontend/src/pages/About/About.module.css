@@ -20,6 +20,12 @@
   display: grid;
   gap: clamp(0.75rem, 2.4vh, 1.5rem);
   justify-items: start;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border: 1px solid rgba(140, 200, 255, 0.16);
+  border-radius: var(--radius-lg);
+  background: rgba(3, 12, 24, 0.46);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
 }
 
 .title {
@@ -70,6 +76,7 @@
 .principleTitle {
   font-size: 0.92rem;
   font-weight: 600;
+  color: var(--color-text);
 }
 
 .principleText {
@@ -169,6 +176,106 @@
   box-shadow: 0 0 10px rgba(61, 220, 132, 0.55);
 }
 
+.team {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: var(--space-4);
+  padding-block: 0 var(--space-12);
+}
+
+.teamTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.8vw, 2rem);
+  font-weight: 500;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.teamMember {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  text-align: center;
+  gap: var(--space-2);
+  min-height: 300px;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: rgba(5, 12, 21, 0.72);
+}
+
+.photoFrame {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 150px);
+  aspect-ratio: 4 / 5;
+  margin-bottom: var(--space-2);
+  padding: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(163, 221, 255, 0.72);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(108, 196, 245, 0.3), rgba(4, 12, 22, 0.95));
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.42),
+    0 0 18px rgba(108, 196, 245, 0.14),
+    inset 0 1px 3px rgba(255, 255, 255, 0.2);
+}
+
+.photoFrame::after {
+  position: absolute;
+  z-index: 2;
+  inset: 3px;
+  border: 1px solid rgba(210, 239, 255, 0.32);
+  border-radius: 10px;
+  content: "";
+  pointer-events: none;
+}
+
+.photoFallback {
+  position: absolute;
+  z-index: 0;
+  inset: 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: radial-gradient(circle at 50% 30%, rgba(108, 196, 245, 0.22), rgba(5, 12, 21, 0.96) 68%);
+  color: var(--color-accent-soft);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+}
+
+.photoFrame img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.photoFrame img[hidden] {
+  display: none;
+}
+
+.teamMember h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.teamMember p {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
 @media (max-width: 860px) {
   .grid {
     grid-template-columns: 1fr;
@@ -190,8 +297,11 @@
   .side { gap: var(--space-6); }
   .coords { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .projectCard { margin-left: 0; }
+  .team { padding-bottom: var(--space-8); }
+  .teamGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 520px) {
   .principles { grid-template-columns: 1fr; }
+  .teamGrid { grid-template-columns: 1fr; }
 }

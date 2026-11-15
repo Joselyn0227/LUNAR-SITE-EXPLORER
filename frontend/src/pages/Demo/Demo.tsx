@@ -158,7 +158,7 @@ export default function Demo() {
 
   const [view, setView] = useState<MoonView>("3D");
 
-  const [ground, setGround] = useState(false);
+  const [ground] = useState(false);
 
   const [zoom, setZoom] = useState<ZoomCmd>({
     id: 0,
@@ -905,6 +905,55 @@ export default function Demo() {
             : "ESPERANDO DATOS ASTRONÓMICOS"}
         </span>
       </div>
+
+      <section className={styles.methodology} aria-labelledby="processing-title">
+        <div className={styles.methodologyHeading}>
+          <span className={styles.eyebrow}>Cómo funciona</span>
+          <h2 id="processing-title">Del dato astronómico a la visualización</h2>
+          <p>
+            La demo combina una ubicación y un periodo de análisis con datos de terreno y
+            posiciones calculadas para explorar las condiciones del sitio.
+          </p>
+        </div>
+
+        <ol className={styles.processSteps}>
+          <li>
+            <span>01</span>
+            <h3>Define el escenario</h3>
+            <p>Selecciona un sitio o introduce coordenadas y fechas para consultar.</p>
+          </li>
+          <li>
+            <span>02</span>
+            <h3>Consulta los datos</h3>
+            <p>
+              El backend usa modelos de elevación LOLA para el terreno y JPL Horizons para las
+              posiciones del Sol y la Tierra.
+            </p>
+          </li>
+          <li>
+            <span>03</span>
+            <h3>Explora los resultados</h3>
+            <p>
+              El mapa, las vistas de superficie y los paneles muestran las condiciones disponibles
+              para comparar el escenario.
+            </p>
+          </li>
+        </ol>
+
+        <div className={styles.technicalDetails}>
+          <h3>Descripción técnica</h3>
+          <p>
+            El frontend está desarrollado con React y TypeScript. Una API en FastAPI coordina las
+            consultas astronómicas a JPL Horizons y el acceso a los modelos digitales de elevación
+            lunar. Los resultados alimentan las vistas 2D y 3D y los paneles de análisis.
+          </p>
+          <p className={styles.methodologyNote}>
+            La herramienta es educativa y de análisis preliminar. Sus resultados dependen de la
+            cobertura y resolución de los datos disponibles y no sustituyen validaciones de una
+            misión real.
+          </p>
+        </div>
+      </section>
     </section>
   );
 }

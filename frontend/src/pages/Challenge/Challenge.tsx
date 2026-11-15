@@ -1,4 +1,4 @@
-import { ArrowRight, Sun, Wifi } from "lucide-react";
+import { ArrowRight, Mountain, Sun, Wifi } from "lucide-react";
 import { Button } from "../../components/ui/Button";
 import { GlassCard } from "../../components/ui/GlassCard";
 import { SectionLabel } from "../../components/ui/SectionLabel";
@@ -6,29 +6,28 @@ import { StatCard } from "../../components/ui/StatCard";
 import MoonScene from "../../components/moon/MoonScene";
 import styles from "./Challenge.module.css";
 
-const LOREM_1 =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-
-const LOREM_2 =
-  "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.";
-
 const factors = [
   {
+    icon: <Mountain size={22} />,
+    title: "Topografía lunar",
+    text: "La elevación, las pendientes y los cráteres influyen en las condiciones del descenso y la exploración.",
+  },
+  {
     icon: <Sun size={22} />,
-    title: "Posición del Sol",
-    text: "Determina la disponibilidad de energía para los paneles solares y las condiciones térmicas.",
+    title: "Iluminación solar",
+    text: "La luz llega con ángulos bajos y el relieve proyecta sombras que condicionan la energía disponible.",
   },
   {
     icon: <Wifi size={22} />,
-    title: "Posición de la Tierra",
-    text: "Afecta la posibilidad de mantener comunicaciones directas.",
+    title: "Comunicación con la Tierra",
+    text: "La posición aparente de la Tierra y el horizonte local pueden afectar la comunicación directa.",
   },
 ];
 
 const importance = [
-  { value: "+10", text: "misiones lunares planeadas (2030+)" },
-  { value: "2", text: "factores críticos (Sol y Tierra)" },
-  { value: "1", text: "herramienta integral" },
+  { value: "3", text: "factores relacionados" },
+  { value: "1", text: "región de interés: polo sur" },
+  { value: "1", text: "herramienta educativa" },
 ];
 
 export default function Challenge() {
@@ -37,13 +36,19 @@ export default function Challenge() {
       <div className={`container ${styles.grid}`}>
         <div className={`${styles.copy} anim-fade-up`}>
           <SectionLabel>El reto</SectionLabel>
-          <h1 className={styles.title}>Lunar Landing Site Navigator</h1>
+          <h1 className={styles.title}>Elegir un sitio lunar exige analizar más de una variable</h1>
 
           <div className={styles.statement}>
-            <SectionLabel>Problem statement</SectionLabel>
-            <p>{LOREM_1}</p>
+            <SectionLabel>Planteamiento del problema</SectionLabel>
+            <p>
+              Seleccionar posibles sitios de aterrizaje en el polo sur lunar requiere evaluar
+              simultáneamente la topografía, la iluminación solar y la comunicación con la Tierra.
+              Las condiciones cambian según la ubicación y el tiempo, por lo que ningún factor
+              aislado describe por completo el entorno.
+            </p>
           </div>
 
+          <SectionLabel>Bases principales</SectionLabel>
           <ul className={styles.factors}>
             {factors.map((f) => (
               <li key={f.title} className={styles.factor}>
@@ -56,7 +61,12 @@ export default function Challenge() {
             ))}
           </ul>
 
-          <p className={styles.note}>{LOREM_2}</p>
+          <p className={styles.note}>
+            Los modelos de elevación de LOLA ayudan a estudiar el relieve lunar, mientras que JPL
+            Horizons proporciona posiciones astronómicas del Sol y la Tierra. Integrar estas
+            perspectivas permite explorar escenarios de manera preliminar; no sustituye las
+            validaciones necesarias para una misión real.
+          </p>
 
           <Button to="/solucion" variant="outline" icon={<ArrowRight size={16} />}>
             Ver la solución
@@ -70,8 +80,8 @@ export default function Challenge() {
 
         <aside className={styles.side}>
           <div className={styles.coords}>
-            <StatCard label="Región polo sur" value="89.9° S · 0.0° E" />
-            <StatCard label="Altitud promedio" value="-2,000 m" />
+            <StatCard label="Zona de interés" value="Polo sur lunar" />
+            <StatCard label="Factores" value="Relieve · Sol · Tierra" />
           </div>
 
           <GlassCard className={styles.importance}>
