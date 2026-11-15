@@ -5,6 +5,8 @@ export interface LunarSite {
   id: string;
   name: string;
   coordinates: string;
+  latitude: number;
+  longitude: number;
   kind: SiteKind;
   status: SiteStatus;
   mapPosition: { x: number; y: number };
@@ -20,6 +22,8 @@ export const mockSites: LunarSite[] = [
     id: "shackleton",
     name: "Shackleton Crater",
     coordinates: "89.9° S · 0.0° E",
+    latitude: -89.9,
+    longitude: 0,
     kind: "site",
     status: "excellent",
     mapPosition: { x: 52, y: 82 },
@@ -33,6 +37,8 @@ export const mockSites: LunarSite[] = [
     id: "zuman",
     name: "Zumán Crater",
     coordinates: "84.5° S · 3.2° E",
+    latitude: -84.5,
+    longitude: 3.2,
     kind: "site",
     status: "good",
     mapPosition: { x: 34, y: 44 },
@@ -46,6 +52,8 @@ export const mockSites: LunarSite[] = [
     id: "haworth",
     name: "Haworth",
     coordinates: "86.1° S · 3.7° E",
+    latitude: -86.1,
+    longitude: 3.7,
     kind: "site",
     status: "review",
     mapPosition: { x: 77, y: 46 },
@@ -59,6 +67,8 @@ export const mockSites: LunarSite[] = [
     id: "cabeus",
     name: "Cabeus",
     coordinates: "85.3° S · 2.2° E",
+    latitude: -85.3,
+    longitude: 2.2,
     kind: "coordinate",
     status: "review",
     mapPosition: { x: 26, y: 56 },
@@ -72,6 +82,8 @@ export const mockSites: LunarSite[] = [
     id: "gerlache",
     name: "de Gerlache",
     coordinates: "83.5° S · 12.4° E",
+    latitude: -83.5,
+    longitude: 12.4,
     kind: "coordinate",
     status: "good",
     mapPosition: { x: 68, y: 30 },

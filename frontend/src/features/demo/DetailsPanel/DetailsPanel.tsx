@@ -7,9 +7,15 @@ export type DetailTab = "summary" | "energy" | "communications";
 
 interface DetailsPanelProps {
   site: LunarSite;
+  elevation: ElevationState;
   tab: DetailTab;
   onTabChange: (tab: DetailTab) => void;
 }
+
+export type ElevationState =
+  | { status: "loading" }
+  | { status: "loaded"; elevationM: number }
+  | { status: "error"; message: string };
 
 const tabs: { value: DetailTab; label: string }[] = [
   { value: "summary", label: "Resumen" },
@@ -17,7 +23,7 @@ const tabs: { value: DetailTab; label: string }[] = [
   { value: "communications", label: "Comunicaciones" },
 ];
 
-export default function DetailsPanel({ site, tab, onTabChange }: DetailsPanelProps) {
+export default function DetailsPanel({ site, elevation, tab, onTabChange }: DetailsPanelProps) {
   const [expanded, setExpanded] = useState(false);
   const scoreRows = [
     ["Energía", site.scores.energy],
@@ -68,6 +74,17 @@ export default function DetailsPanel({ site, tab, onTabChange }: DetailsPanelPro
                 <div className={styles.sunValue}><strong>{site.sunlight}%</strong><small>Iluminación solar</small></div>
               </div>
               <div className={styles.metric}><span><Thermometer size={13} /> Térmico</span><strong>{site.temperature}</strong></div>
+              <div className={styles.metric} role="status" aria-live="polite">
+                <span>Elevación del terreno</span>
+                <strong>
+                  {elevation.status === "loaded"
+                    ? `${Math.round(elevation.elevationM).toLocaleString("es-ES")} m`
+                    : elevation.status === "loading"
+                      ? "Consultando…"
+                      : "No disponible"}
+                </strong>
+              </div>
+              {elevation.status === "error" && <p className={styles.apiError} role="alert">{elevation.message}</p>}
             </section>
             <section className={styles.infoSection}>
               <h3>Comunicaciones con la Tierra</h3>

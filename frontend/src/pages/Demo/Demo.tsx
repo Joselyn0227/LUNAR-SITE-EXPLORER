@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Activity, Crosshair, LocateFixed, Minus, Plus } from "lucide-react";
 import MoonScene from "../../components/moon/MoonScene";
 import MoonFlat from "../../components/moon/MoonFlat";
 import { mockSites } from "../../data/mockSites";
-import DetailsPanel, { type DetailTab } from "../../features/demo/DetailsPanel/DetailsPanel";
+import DetailsPanel, { type DetailTab, type ElevationState } from "../../features/demo/DetailsPanel/DetailsPanel";
 import SitesPanel, { type SiteFilter } from "../../features/demo/SitesPanel/SitesPanel";
 import ViewControls, { type MoonView } from "../../features/demo/ViewControls/ViewControls";
+import { fetchLunarElevation } from "../../services/api";
 import styles from "./Demo.module.css";
 
 export default function Demo() {
   const [selectedId, setSelectedId] = useState(mockSites[0].id);
+  const [elevationResult, setElevationResult] = useState<{
+    siteId: string;
+    state: ElevationState;
+  }>({ siteId: mockSites[0].id, state: { status: "loading" } });
   const [filter, setFilter] = useState<SiteFilter>("all");
   const [view, setView] = useState<MoonView>("3D");
   const [ground, setGround] = useState(false);
@@ -17,7 +22,51 @@ export default function Demo() {
   const [zoom, setZoom] = useState(1);
   const [tab, setTab] = useState<DetailTab>("summary");
   const selectedSite = mockSites.find((site) => site.id === selectedId) ?? mockSites[0];
+  const elevation =
+    elevationResult.siteId === selectedSite.id
+      ? elevationResult.state
+      : { status: "loading" as const };
   const visibleSites = mockSites.filter((site) => filter === "all" || site.kind === filter);
+  const connectionLabel =
+    elevation.status === "loaded"
+      ? "API LUNAR CONECTADA"
+      : elevation.status === "loading"
+        ? "CONECTANDO API LUNAR"
+        : "API LUNAR NO DISPONIBLE";
+  const connectionStatusClass =
+    elevation.status === "error"
+      ? styles.connectionError
+      : elevation.status === "loading"
+        ? styles.connectionPending
+        : "";
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    fetchLunarElevation(selectedSite.latitude, selectedSite.longitude, controller.signal)
+      .then((elevationM) =>
+        setElevationResult({
+          siteId: selectedSite.id,
+          state: { status: "loaded", elevationM },
+        }),
+      )
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return;
+
+        const message =
+          error instanceof TypeError
+            ? "No se pudo conectar con la API lunar. Comprueba que el backend esté activo en http://localhost:8000."
+            : error instanceof Error
+              ? error.message
+              : "Error desconocido al consultar la API lunar.";
+        setElevationResult({
+          siteId: selectedSite.id,
+          state: { status: "error", message },
+        });
+      });
+
+    return () => controller.abort();
+  }, [selectedSite.id, selectedSite.latitude, selectedSite.longitude]);
 
   function handleFilterChange(nextFilter: SiteFilter) {
     setFilter(nextFilter);
@@ -34,7 +83,9 @@ export default function Demo() {
           <span className={styles.eyebrow}>CENTRO DE EXPLORACIÓN</span>
           <h1 id="demo-title">Lunar landing site navigator</h1>
         </div>
-        <span className={styles.connection}><span /> DATOS DE DEMOSTRACIÓN</span>
+        <span className={`${styles.connection} ${connectionStatusClass}`} aria-live="polite">
+          <span /> {connectionLabel}
+        </span>
       </div>
 
       <div className={styles.workspace}>
@@ -107,12 +158,12 @@ export default function Demo() {
           </div>
         </section>
 
-        <DetailsPanel site={selectedSite} tab={tab} onTabChange={setTab} />
+        <DetailsPanel site={selectedSite} elevation={elevation} tab={tab} onTabChange={setTab} />
       </div>
 
       <div className={styles.footerLine}>
         <span><Activity size={13} /> {live ? "SIMULACIÓN ACTIVA" : "SIMULACIÓN EN PAUSA"} · {mockSites.length} PUNTOS DE INTERÉS</span>
-        <span>FUENTE: DATOS LOCALES DE DEMOSTRACIÓN</span>
+        <span>FUENTE: ELEVACIÓN API · OTROS DATOS DE DEMOSTRACIÓN</span>
       </div>
     </section>
   );

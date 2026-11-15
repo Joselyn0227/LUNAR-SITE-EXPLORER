@@ -49,6 +49,16 @@
   box-shadow: 0 0 10px rgba(61, 220, 132, 0.7);
 }
 
+.connectionPending span {
+  background: #e6bd58;
+  box-shadow: 0 0 10px rgba(230, 189, 88, 0.55);
+}
+
+.connectionError span {
+  background: #ed7474;
+  box-shadow: 0 0 10px rgba(237, 116, 116, 0.55);
+}
+
 .workspace {
   flex: 1;
   min-height: 520px;

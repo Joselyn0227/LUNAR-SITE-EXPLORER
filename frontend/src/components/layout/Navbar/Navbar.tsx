@@ -12,13 +12,7 @@ const links = [
 ];
 
 function Logo() {
-  return (
-    <svg width="38" height="38" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-      <circle cx="18" cy="18" r="13" stroke="currentColor" strokeWidth="1.5"
-        strokeDasharray="62 20" strokeLinecap="round" />
-      <circle cx="18" cy="18" r="4.5" fill="currentColor" opacity="0.9" />
-    </svg>
-  );
+  return <img src="/favicon.png" width={70} height={70} alt="" />;
 }
 
 export default function Navbar() {

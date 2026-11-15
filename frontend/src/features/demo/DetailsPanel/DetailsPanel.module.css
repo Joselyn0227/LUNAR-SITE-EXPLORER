@@ -115,6 +115,7 @@
 
 .metric span { display: inline-flex; align-items: center; gap: 0.2rem; }
 .metric strong { color: #c1d3e0; font-size: 0.59rem; font-weight: 500; text-align: right; }
+.apiError { margin-top: 0.4rem; color: #ed9999; font-size: 0.58rem; line-height: 1.4; }
 
 .signal {
   height: 27px;
