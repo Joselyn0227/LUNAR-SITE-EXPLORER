@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { Stars } from "@react-three/drei";
+import { OrbitControls, Stars } from "@react-three/drei";
 import MoonBody from "./MoonBody";
 import OrbitRing from "./OrbitRing";
 import usePrefersReducedMotion from "../../hooks/usePrefersReducedMotion";
@@ -71,9 +71,10 @@ function Composition({ layout, animate }: { layout: MoonLayout; animate: boolean
 
 export default function MoonScene({ layout, animate = true }: { layout: MoonLayout; animate?: boolean }) {
   const reduced = usePrefersReducedMotion();
+  const interactive = layout === "demo";
 
   return (
-    <div className={styles.scene} aria-hidden="true">
+    <div className={`${styles.scene} ${interactive ? styles.sceneInteractive : ""}`} aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 3.2], fov: 35 }}
         dpr={[1, 2]}
@@ -86,6 +87,15 @@ export default function MoonScene({ layout, animate = true }: { layout: MoonLayo
           <Stars radius={80} depth={50} count={2500} factor={3.5} saturation={0} fade speed={reduced ? 0 : 0.6} />
           <Composition layout={layout} animate={animate && !reduced} />
         </Suspense>
+        {interactive && (
+          <OrbitControls
+            enableDamping
+            enablePan={false}
+            enableZoom={false}
+            minPolarAngle={0}
+            maxPolarAngle={Math.PI}
+          />
+        )}
       </Canvas>
     </div>
   );
