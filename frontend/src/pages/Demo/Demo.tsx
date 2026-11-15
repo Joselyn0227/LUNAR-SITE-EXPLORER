@@ -316,7 +316,7 @@ export default function Demo() {
 
     const cantidadDias = contarDiasIncluidos(fechaInicio, fechaFin);
 
-    if (cantidadDias > 60) {
+    if (cantidadDias > 1460) {
       setCielo(null);
       setCargandoCielo(false);
 
@@ -688,7 +688,7 @@ export default function Demo() {
             type="date"
             value={fechaInicio}
             max={fechaFin || undefined}
-            min={fechaFin ? sumarDias(fechaFin, -59) : undefined}
+            min={fechaFin ? sumarDias(fechaFin, -1459) : undefined}
             onChange={(event) => setFechaInicio(event.target.value)}
           />
         </label>
@@ -699,7 +699,7 @@ export default function Demo() {
             type="date"
             value={fechaFin}
             min={fechaInicio || undefined}
-            max={fechaInicio ? sumarDias(fechaInicio, 59) : undefined}
+            max={fechaInicio ? sumarDias(fechaInicio, 1459) : undefined}
             onChange={(event) => setFechaFin(event.target.value)}
           />
         </label>

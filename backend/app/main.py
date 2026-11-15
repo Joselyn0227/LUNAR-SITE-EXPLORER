@@ -114,7 +114,7 @@ async def cielo_lunar(
         if cantidad_dias > 1460:
             raise HTTPException(
                 status_code=422,
-                detail="El período máximo permitido es de 60 días."
+                detail="El período máximo permitido es de 4 años."
             )
 
         # Inicio del primer día en la zona horaria solicitada.
