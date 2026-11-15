@@ -85,11 +85,8 @@ npm run lint
 
 - El documento de investigación se encuentra en `frontend/public/docs/investigacion.pdf`.
 - Los retratos del equipo se guardan en `frontend/public/images/`.
-- Cuando esté listo el video pitch, guárdalo como `frontend/public/video-pitch.mp4`.
+- El video pitch, está disponible en `frontend/public/video-pitch.mp4`.
 
-## Despliegue
-
-GitHub Pages puede alojar el frontend estático, pero no ejecuta el backend FastAPI. Para que la demo consulte datos en producción, el backend debe desplegarse por separado y el frontend debe configurarse con la URL pública de esa API. También se debe configurar la ruta base del proyecto para GitHub Pages.
 
 ## Referencias
 
