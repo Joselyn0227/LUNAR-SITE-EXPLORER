@@ -10,65 +10,23 @@ from . import dem
 from .dem import DemNoDisponible, FueraDeCobertura
 
 R_LUNA_M = 1_737_400.0
-UMBRAL_GRUESO_KM = 25.0     # por encima de este radio se usa DEM_PATH_GRUESO, si está definido
+UMBRAL_GRUESO_KM = 20.0     # por encima de este radio se usa DEM_PATH_GRUESO, si está definido
 MAX_PIXELES_LADO = 3000     # protección: no leer ventanas gigantes
 
 
-def _leer(lat: float, lon: float, radio_km: float, n: int) -> tuple[np.ndarray, float]:
-    if abs(lat) > 85:
-        raise FueraDeCobertura("Cerca de los polos la malla lat/lon se deforma; use un DEM polar")
+def _leer(
+    lat: float,
+    lon: float,
+    radio_km: float,
+    n: int,
+) -> tuple[np.ndarray, float, float, str]:
 
-    grueso = bool(dem.DEM_PATH_GRUESO) and radio_km > UMBRAL_GRUESO_KM
-    ruta = dem.DEM_PATH_GRUESO if grueso else dem.DEM_PATH
-
-    radio_m = radio_km * 1000
-    dlat = math.degrees(radio_m / R_LUNA_M)
-    dlon = dlat / math.cos(math.radians(lat))   # los meridianos convergen hacia los polos
-
-    with dem._lock, Env(**dem.GDAL_OPTS):
-        ds = dem.abrir(ruta)
-        b = ds.bounds
-
-        # Las cuatro esquinas del parche, convertidas al CRS del DEM
-        izq, der, abajo, arriba = lon - dlon, lon + dlon, lat - dlat, lat + dlat
-        xs, ys = dem.a_dem(ds, [izq, der, izq, der], [abajo, abajo, arriba, arriba])
-
-        if xs[0] >= xs[1] or xs[2] >= xs[3]:
-            raise FueraDeCobertura(
-                "El parche cruza el meridiano 0/180 del DEM; aún no soportado"
-            )
-        x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
-        if x0 < b.left or x1 > b.right or y0 < b.bottom or y1 > b.top:
-            raise FueraDeCobertura(
-                "El parche toca el borde del DEM (meridiano 0/180 o polo); aún no soportado"
-            )
-
-        # Tamaño de píxel en metros (en un DEM proyectado, res ya viene en metros)
-        if ds.crs.is_geographic:
-            pixel_m = math.radians(abs(ds.res[1])) * R_LUNA_M
-        else:
-            pixel_m = abs(ds.res[1])
-
-        ventana = from_bounds(x0, y0, x1, y1, transform=ds.transform)
-        if ventana.width > MAX_PIXELES_LADO or ventana.height > MAX_PIXELES_LADO:
-            raise FueraDeCobertura(
-                f"La ventana pedida ({ventana.width:.0f} x {ventana.height:.0f} px) es "
-                "demasiado grande para este DEM; reduzca radio_km o use DEM_PATH_GRUESO"
-            )
-
-        celda = 2 * radio_m / n
-        remuestreo = Resampling.average if celda > 1.5 * pixel_m else Resampling.bilinear
-        try:
-            datos = ds.read(1, window=ventana, out_shape=(n, n), resampling=remuestreo)
-        except Exception as e:
-            raise DemNoDisponible(f"Fallo al leer el DEM: {e}")
-        escala, offset = dem.escala_offset(ds, grueso)
-        nodata = ds.nodata
-
-    z = datos.astype("float64")
-    if nodata is not None:
-        z[datos == nodata] = np.nan
-    return z * escala + offset, pixel_m
+    return dem.leer_parche(
+        lat=lat,
+        lon=lon,
+        radio_km=radio_km,
+        n=n,
+    )
 
 
 def _horizonte(z: np.ndarray, celda_m: float, paso_az: int = 5) -> list[dict]:
@@ -93,19 +51,29 @@ def _horizonte(z: np.ndarray, celda_m: float, paso_az: int = 5) -> list[dict]:
 
 @lru_cache(maxsize=32)
 def _parche(lat: float, lon: float, radio_km: float, n: int) -> dict:
-    z, pixel_m = _leer(lat, lon, radio_km, n)
+    z, pixel_m, cobertura_pct, modo_dem = _leer(
+        lat,
+        lon,
+        radio_km,
+        n,
+    )
     z0 = z[(n - 1) // 2, (n - 1) // 2]
     if np.isnan(z0):
         raise FueraDeCobertura("Sin dato en el centro del parche")
 
     celda = 2 * radio_km * 1000 / n
     return {
-        "lat": lat, "lon": lon, "radio_km": radio_km, "n": n,
+        "lat": lat,
+        "lon": lon,
+        "radio_km": radio_km,
+        "n": n,
         "celda_m": celda,
         "resolucion_dem_m": round(pixel_m, 1),
         "centro_m": round(float(z0), 1),
         "elevaciones_m": np.round(np.nan_to_num(z, nan=z0), 1).ravel().tolist(),
         "horizonte": _horizonte(z, celda),
+        "cobertura_pct": round(cobertura_pct, 2),
+        "modo_dem": modo_dem,
     }
 
 

@@ -68,13 +68,25 @@ h1, h2, h3 {
   border-radius: var(--radius-sm);
 }
 
-/* Scrollbar discreta */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--color-bg-0); }
+::-webkit-scrollbar {
+  width: 8px;  /* Controla el scrollbar vertical */
+  height: 8px; /* Controla el scrollbar horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-0);
+}
+
 ::-webkit-scrollbar-thumb {
   background: var(--color-border-strong);
   border-radius: var(--radius-pill);
 }
+
+/* Evita el cuadro blanco en la intersección de ambas barras */
+::-webkit-scrollbar-corner {
+  background: var(--color-bg-0);
+}
+
 
 /* Utilidades */
 .container {

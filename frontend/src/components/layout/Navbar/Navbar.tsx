@@ -12,7 +12,9 @@ const links = [
 ];
 
 function Logo() {
-  return <img src="/favicon.png" width={70} height={70} alt="" />;
+  return (
+    <img src="/Logo_Lunar_Site_Explorer.png" alt="Logo_Lunar_Site_Explorer" height={75} />
+  );
 }
 
 export default function Navbar() {

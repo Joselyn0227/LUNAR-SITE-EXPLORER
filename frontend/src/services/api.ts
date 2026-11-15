@@ -1,29 +1,51 @@
-const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
-).replace(/\/+$/, "");
+export const API_ROUTES = {
+  TERRENO: (
+    lat: number,
+    lon: number,
+    radio_km = 25,
+    n = 257,
+  ) => {
+    const params = new URLSearchParams({
+      lat: String(lat),
+      lon: String(lon),
+      radio_km: String(radio_km),
+      n: String(n),
+    });
 
-export async function fetchLunarElevation(
-  lat: number,
-  lon: number,
-  signal: AbortSignal,
-): Promise<number> {
-  const params = new URLSearchParams({ lat: String(lat), lon: String(lon) });
-  const response = await fetch(`${API_BASE_URL}/luna/elevacion?${params}`, { signal });
+    return `/api/luna/terreno?${params.toString()}`;
+  },
 
-  if (!response.ok) {
-    throw new Error(`La API lunar respondió con HTTP ${response.status}.`);
-  }
+  ELEVACION: (lat: number, lon: number) => {
+    const params = new URLSearchParams({
+      lat: String(lat),
+      lon: String(lon),
+    });
 
-  const payload: unknown = await response.json();
-  if (
-    typeof payload !== "object" ||
-    payload === null ||
-    !("elevacion_m" in payload) ||
-    typeof payload.elevacion_m !== "number" ||
-    !Number.isFinite(payload.elevacion_m)
-  ) {
-    throw new Error("La API lunar devolvió una elevación no válida.");
-  }
+    return `/api/luna/elevacion?${params.toString()}`;
+  },
 
-  return payload.elevacion_m;
-}
+  CIELO: (
+    lat: number,
+    lon: number,
+    fecha_inicio: string,
+    fecha_fin: string,
+    alt_m?: number,
+    paso = "1 h",
+    tz = "America/Bogota",
+  ) => {
+    const params = new URLSearchParams({
+      lat: String(lat),
+      lon: String(lon),
+      fecha_inicio,
+      fecha_fin,
+      paso,
+      tz,
+    });
+
+    if (alt_m !== undefined) {
+      params.set("alt_m", String(alt_m));
+    }
+
+    return `/api/luna/cielo?${params.toString()}`;
+  },
+} as const;

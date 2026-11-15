@@ -1,0 +1,32 @@
+.mapa { height: 100%; width: 100%; background: #000; }
+
+/* Selector de vista del mapa 2D. Colocado bajo la línea superior; ajusta top/left a tu diseño */
+.vistas {
+  position: absolute;
+  top: 44px;
+  left: 12px;
+  z-index: 1000;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.boton {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.55);
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.activo { background: rgba(74, 168, 232, 0.3); border-color: #4aa8e8; }
+
+.etiqueta {
+  white-space: nowrap;
+  font-size: 12px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 2px 8px;
+  border-radius: 6px;
+}

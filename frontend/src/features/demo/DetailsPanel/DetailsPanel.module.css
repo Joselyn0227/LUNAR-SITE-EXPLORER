@@ -2,7 +2,8 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: auto;
+  max-height: 100dvh;
   border: 1px solid rgba(115, 177, 225, 0.15);
   border-radius: 9px;
   background: rgba(5, 12, 21, 0.7);
@@ -15,15 +16,6 @@
   padding: 0.8rem 0.75rem 0.7rem;
 }
 
-.siteIcon {
-  flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(190, 218, 237, 0.22);
-  border-radius: 50%;
-  background: url("/textures/moon-color.jpg") center / 200% 100%;
-  box-shadow: inset -7px -2px 10px rgba(0, 0, 0, 0.55);
-}
 
 .titleCopy { min-width: 0; }
 .titleCopy h2 { overflow: hidden; color: #e1edf6; font-size: 0.77rem; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
@@ -207,4 +199,402 @@
 @media (max-width: 680px) {
   .content { grid-template-columns: 1fr; }
   .detailsButton, .coordinatesButton, .description { grid-column: auto; }
+}
+
+
+.panel {
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: #e5eaf0;
+  background: #111923;
+  border: 1px solid rgba(150, 175, 195, 0.12);
+  border-radius: 12px;
+}
+
+.siteHeader {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 17px;
+  border-bottom: 1px solid rgba(150, 175, 195, 0.12);
+}
+
+.siteIcon {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 11px;
+  background:
+    radial-gradient(circle at 35% 30%, #f2d18a, transparent 32%),
+    linear-gradient(145deg, #7b8795, #384756);
+  box-shadow: 0 0 18px rgba(213, 171, 91, 0.12);
+}
+
+.titleCopy {
+  min-width: 0;
+}
+
+.eyebrow {
+  color: #8c9ba9;
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  font-weight: 700;
+}
+
+.titleCopy h2 {
+  margin: 4px 0 5px;
+  color: #f2f5f8;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.titleCopy p {
+  margin: 2px 0;
+  color: #8f9eac;
+  font-size: 11px;
+}
+
+.tabs {
+  display: flex;
+  gap: 3px;
+  padding: 9px 10px;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(150, 175, 195, 0.12);
+}
+
+.tabs button {
+  flex: 1 0 auto;
+  padding: 9px 11px;
+  border: 0;
+  border-radius: 6px;
+  color: #8999a8;
+  background: transparent;
+  font-size: 11px;
+  cursor: pointer;
+  transition: 160ms ease;
+}
+
+.tabs button:hover {
+  color: #e5eaf0;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tabs .tabActive {
+  color: #f0c56d;
+  background: rgba(217, 164, 65, 0.12);
+}
+
+.content {
+  min-height: 0;
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #43515e transparent;
+}
+
+.infoSection,
+.chartSection,
+.evaluation {
+  margin-bottom: 20px;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #d9a441;
+}
+
+.sectionHeading h3,
+.chartHeading h3,
+.evaluationTitle h3 {
+  margin: 0;
+  color: #e6ecf2;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.metricCard {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  padding: 11px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(150, 175, 195, 0.09);
+  border-radius: 8px;
+}
+
+.metricCard span {
+  color: #91a0ae;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.metricCard strong {
+  color: #eef2f5;
+  font-size: 17px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.metricCard small {
+  color: #7d8d9b;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.metricRow,
+.indicatorRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 2px;
+  border-bottom: 1px solid rgba(150, 175, 195, 0.09);
+}
+
+.metricRow span,
+.indicatorRow span {
+  color: #9aa8b5;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.metricRow strong,
+.indicatorRow strong {
+  color: #e5ebf1;
+  font-size: 11px;
+  font-weight: 650;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.statusGood {
+  color: #83cba9 !important;
+}
+
+.statusBad {
+  color: #dd8989 !important;
+}
+
+.primaryValue {
+  margin: 15px 0;
+  color: #eac16c;
+  font-size: 29px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.primaryValue small {
+  display: block;
+  margin-top: 5px;
+  color: #8796a4;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.chartSection {
+  padding: 12px 10px 8px;
+  border: 1px solid rgba(150, 175, 195, 0.11);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.chartHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.chartHeading span {
+  color: #82919f;
+  font-size: 9px;
+}
+
+.chart {
+  width: 100%;
+  min-width: 0;
+  height: auto;
+}
+
+.chart :global(.recharts-cartesian-grid-horizontal line),
+.chart :global(.recharts-cartesian-grid-vertical line) {
+  stroke: rgba(150, 175, 195, 0.12);
+}
+
+.chart :global(.recharts-text) {
+  fill: #8796a4;
+}
+
+.chart :global(.recharts-tooltip-wrapper) {
+  outline: none;
+}
+
+.chart :global(.recharts-default-tooltip) {
+  color: #e9edf1 !important;
+  background: #202c38 !important;
+  border: 1px solid rgba(150, 175, 195, 0.18) !important;
+  border-radius: 7px;
+}
+
+.chart :global(.recharts-tooltip-item) {
+  color: #e9edf1 !important;
+}
+
+.evaluation {
+  padding: 13px;
+  border: 1px solid rgba(150, 175, 195, 0.12);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.evaluationTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.evaluationTitle span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #91b8a4;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.description {
+  margin: 12px 0 0;
+  color: #8594a2;
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+.description p {
+  margin: 8px 0;
+}
+
+.description strong {
+  color: #bac6d0;
+}
+
+.detailsButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  padding: 11px 2px;
+  border: 0;
+  border-bottom: 1px solid rgba(150, 175, 195, 0.1);
+  color: #b7c3ce;
+  background: transparent;
+  text-align: left;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.detailsButton:hover {
+  color: #f0c56d;
+}
+
+.coordinatesButton {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 10px;
+  border: 1px solid rgba(150, 175, 195, 0.12);
+  border-radius: 7px;
+  color: #9eacb9;
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  text-align: left;
+}
+
+.coordinatesButton span {
+  font-size: 10px;
+}
+
+.coordinatesButton strong {
+  color: #dce4eb;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.coordinatesButton:hover {
+  border-color: rgba(217, 164, 65, 0.4);
+}
+
+.status,
+.error,
+.empty {
+  padding: 12px;
+  color: #9aa9b6;
+  background: rgba(255, 255, 255, 0.025);
+  border-radius: 7px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.error {
+  color: #df9a9a;
+}
+
+.empty {
+  text-align: center;
+}
+
+.dataFooter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 15px 0 2px;
+  color: #70808f;
+  font-size: 8px;
+  letter-spacing: 0.07em;
+}
+
+.method {
+  margin-top: 10px;
+}
+
+@media (max-width: 650px) {
+  .content {
+    padding: 12px;
+  }
+
+  .metricCard {
+    padding: 9px;
+  }
+
+  .metricCard strong {
+    font-size: 15px;
+  }
+
+  .tabs button {
+    padding: 8px 9px;
+    font-size: 10px;
+  }
 }
