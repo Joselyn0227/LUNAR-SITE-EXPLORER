@@ -1,17 +1,42 @@
 import { useState } from "react";
 import MapaLunar2D from "./MapaLunar2D";
-import MoonExplorer3D from "./MoonExplorer3D";
-import { SITIOS } from "./sitios";
+import MoonExplorer3D, { type ZoomCmd } from "./MoonExplorer3D";
+import { exampleSites } from "../../data/ExampleSites";
+import { normalizarLon, type PuntoLibre } from "./coords";
 import type { Seleccion } from "./tipos";
 import styles from "./MoonExplorer.module.css";
 
+const ZOOM_SIN_ACCION: ZoomCmd = { id: 0, factor: 1 };
+
 interface Props {
-  onSeleccion?: (p: Seleccion) => void;   // punto confirmado: se lo pasas a tu API
+  onSeleccion?: (p: Seleccion) => void;
 }
 
 export default function MoonExplorer({ onSeleccion }: Props) {
   const [modo, setModo] = useState<"2d" | "3d">("2d");
-  const [seleccion, setSeleccion] = useState<Seleccion | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [puntoLibre, setPuntoLibre] = useState<PuntoLibre | null>(null);
+  const zonaSeleccionada = exampleSites.zonas.find((zona) => zona.id === selectedId);
+  const seleccion: Seleccion | null = puntoLibre
+    ? { lat: puntoLibre.lat, lon: puntoLibre.lon }
+    : zonaSeleccionada
+      ? {
+          lat: zonaSeleccionada.latitud,
+          lon: normalizarLon(zonaSeleccionada.longitud_este),
+          nombre: zonaSeleccionada.nombre,
+          sitioId: zonaSeleccionada.id,
+        }
+      : null;
+
+  const seleccionarSitio = (id: number) => {
+    setSelectedId(id);
+    setPuntoLibre(null);
+  };
+
+  const seleccionarPunto = (punto: PuntoLibre) => {
+    setSelectedId(null);
+    setPuntoLibre(punto);
+  };
 
   return (
     <section className={styles.explorador}>
@@ -31,9 +56,21 @@ export default function MoonExplorer({ onSeleccion }: Props) {
       </div>
 
       {modo === "2d" ? (
-        <MapaLunar2D sitios={SITIOS} seleccion={seleccion} onElegir={setSeleccion} />
+        <MapaLunar2D
+          zonas={exampleSites.zonas}
+          selectedId={selectedId}
+          puntoLibre={puntoLibre}
+          onSelectSite={seleccionarSitio}
+          onSelectPoint={seleccionarPunto}
+        />
       ) : (
-        <MoonExplorer3D sitios={SITIOS} seleccion={seleccion} onElegir={setSeleccion} />
+        <MoonExplorer3D
+          zonas={exampleSites.zonas}
+          selectedId={selectedId}
+          puntoLibre={puntoLibre}
+          onSelectSite={seleccionarSitio}
+          zoom={ZOOM_SIN_ACCION}
+        />
       )}
 
       <div className={styles.barra}>

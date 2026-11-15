@@ -175,7 +175,7 @@ function AjustarImagen() {
   const map = useMap();
 
   useEffect(() => {
-    map.fitBounds(L.latLngBounds(LIMITES_POLARES), {
+    map.fitBounds(LIMITES_POLARES, {
       padding: [10, 10],
     });
   }, [map]);
