@@ -19,7 +19,7 @@ FMT = "%Y-%m-%d %H:%M"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.http = httpx.AsyncClient(headers={"User-Agent": "meteolink-luna/1.0"})
+    app.state.http = httpx.AsyncClient(headers={"User-Agent": "luna/1.0"})
     yield
     await app.state.http.aclose()
 
@@ -28,7 +28,7 @@ app = FastAPI(title="API Cielo Lunar", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # tu React en desarrollo
+    allow_origins=["http://localhost:5173", "http://localhost:3000"],
     allow_methods=["GET"],
     allow_headers=["*"],
 )
@@ -111,7 +111,7 @@ async def cielo_lunar(
 
         cantidad_dias = (fecha_fin - fecha_inicio).days + 1
 
-        if cantidad_dias > 60:
+        if cantidad_dias > 1460:
             raise HTTPException(
                 status_code=422,
                 detail="El período máximo permitido es de 60 días."
