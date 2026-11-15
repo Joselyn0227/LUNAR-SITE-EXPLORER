@@ -16,7 +16,7 @@ export default function Home() {
 
           <h1 className={`${styles.title} anim-fade-up`} style={{ animationDelay: "80ms" }}>
             <span className={styles.line}>LUNAR SITE</span>
-            <span className={`${styles.line} ${styles.accent}`}>EXPLORER</span>
+            <span className={`${styles.line} ${styles.accent}`}>{" "}EXPLORER</span>
           </h1>
 
           <p className={`${styles.lead} anim-fade-up`} style={{ animationDelay: "160ms" }}>

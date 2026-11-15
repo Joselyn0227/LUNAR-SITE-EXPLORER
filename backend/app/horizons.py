@@ -6,7 +6,7 @@ import re
 import httpx
 
 URL = "https://ssd.jpl.nasa.gov/api/horizons.api"
-AU_KM = 149_597.7
+AU_KM = 149_597_870.7
 MESES = {
     "Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
     "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12,
@@ -76,16 +76,6 @@ def _parsear_fecha(texto: str) -> datetime:
     return datetime(int(anio), MESES[mes.strip().title()], int(dia), int(h), int(m),
                     tzinfo=timezone.utc)
 
-
-def _astro(fila: dict) -> dict:
-    elev = float(_col(fila, "Elev"))
-    return {
-        "azumut_deg": float(_col(fila, "Azi")),
-        "elevacion_deg": elev,
-        "visible": elev > 0,
-        "diametro_angular_arcsec": float(_col(fila, "Ang-diam")),
-        "distancia_km": round(float(_col(fila, "delta")) * AU_KM, 1)
-    }
 
 
 async def _consultar(client: httpx.AsyncClient, params: dict) -> list[dict]:

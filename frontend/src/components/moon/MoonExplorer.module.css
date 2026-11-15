@@ -1,0 +1,40 @@
+.explorador { display: grid; gap: 12px; }
+.barra { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+.boton {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.boton:disabled { opacity: 0.4; cursor: not-allowed; }
+.activo { background: rgba(74, 168, 232, 0.25); border-color: #4aa8e8; }
+
+.mapa { height: 520px; width: 100%; background: #000; border-radius: 12px; }
+
+.vista3d { display: grid; grid-template-columns: 1fr 280px; gap: 12px; }
+.lienzo { height: 520px; background: #000; border-radius: 12px; overflow: hidden; }
+
+.lista {
+  list-style: none; margin: 0; padding: 0;
+  max-height: 520px; overflow: auto;
+  display: grid; gap: 6px;
+}
+.sitio {
+  width: 100%; text-align: left; display: grid; gap: 2px;
+  padding: 8px 10px; border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent; color: inherit; cursor: pointer;
+}
+.sitio span { font-size: 12px; opacity: 0.7; }
+
+.etiqueta {
+  white-space: nowrap; font-size: 12px; color: #fff;
+  background: rgba(0, 0, 0, 0.75); padding: 2px 8px; border-radius: 6px;
+}
+
+@media (max-width: 860px) {
+  .vista3d { grid-template-columns: 1fr; }
+}

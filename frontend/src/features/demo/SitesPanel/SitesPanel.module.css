@@ -43,6 +43,8 @@
 
 .siteList {
   display: grid;
+  max-height: 100dvh;
+  overflow-y: scroll;
 }
 
 .site {
@@ -119,4 +121,34 @@
   .panel { grid-row: auto; }
   .siteList { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 0.4rem; }
   .legend { display: none; }
+}
+
+.formCoordinates {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  transition: all;
+  animation-duration: 300ms;
+  font-weight: 500;
+  color: white;
+}
+.formCoordinates button {
+  padding: 5px 25px;
+  background-color: rgb(82, 82, 170);
+  border-radius: 15px;
+}
+.formCoordinates button:hover {
+  background-color: #498fdf;
+}
+.formCoordinates input {
+  padding: 5px;
+  border-radius: 10px;
+  display: flex;
+  width: 100%;
+}
+.formCoordinates h1 {
+  font-size: 20px;
+  text-align: center;
 }

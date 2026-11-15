@@ -1,5 +1,5 @@
-import { useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useMemo, useRef, type ReactNode } from "react";
+import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { MOON_BUMP_MAP, MOON_COLOR_MAP, MOON_RADIUS } from "./moonConfig";
@@ -9,12 +9,32 @@ type Vec3 = [number, number, number];
 
 function ProceduralSurface() {
   const texture = useMemo(() => createProceduralMoonTexture(), []);
-  return <meshStandardMaterial map={texture} bumpMap={texture} bumpScale={1} roughness={1} />;
+  return (
+    <meshStandardMaterial
+      map={texture}
+      bumpMap={texture}
+      bumpScale={1}
+      roughness={1}
+    />
+  );
 }
 
-function TexturedSurface({ colorUrl, bumpUrl }: { colorUrl: string; bumpUrl: string | null }) {
+function TexturedSurface({
+  colorUrl,
+  bumpUrl,
+}: {
+  colorUrl: string;
+  bumpUrl: string | null;
+}) {
   const [color, bump] = useTexture(bumpUrl ? [colorUrl, bumpUrl] : [colorUrl]);
-  return <meshStandardMaterial map={color} bumpMap={bump} bumpScale={3} roughness={1} />;
+  return (
+    <meshStandardMaterial
+      map={color}
+      bumpMap={bump}
+      bumpScale={3}
+      roughness={1}
+    />
+  );
 }
 
 // Halo: más brillante cerca del borde de la Luna y del lado de la luz
@@ -44,6 +64,9 @@ interface MoonBodyProps {
   spin?: number; // radianes por segundo (0 = quieta)
   glowColor?: string;
   glowStrength?: number;
+  tilt?: Vec3;
+  bloquearPuntero?: boolean;
+  children?: ReactNode;
 }
 
 export default function MoonBody({
@@ -51,8 +74,15 @@ export default function MoonBody({
   spin = 0.03,
   glowColor = "#4aa8e8",
   glowStrength = 1.1,
+  tilt = [0.12, 0, -0.1],
+  bloquearPuntero = false,
+  children,
 }: MoonBodyProps) {
   const spinRef = useRef<THREE.Group>(null);
+
+  const bloquear = bloquearPuntero
+    ? (e: ThreeEvent<MouseEvent>) => e.stopPropagation()
+    : undefined;
 
   useFrame((_, delta) => {
     if (spinRef.current && spin) spinRef.current.rotation.y += delta * spin;
@@ -64,22 +94,26 @@ export default function MoonBody({
       uLight: { value: new THREE.Vector3(...lightDirection) },
       uStrength: { value: glowStrength },
     }),
-    [glowColor, lightDirection, glowStrength]
+    [glowColor, lightDirection, glowStrength],
   );
 
   return (
     <group>
       {/* Inclinación del eje, como en el mockup */}
-      <group rotation={[0.12, 0, -0.1]}>
+      <group rotation={tilt}>
         <group ref={spinRef}>
-          <mesh>
+          <mesh onClick={bloquear} onPointerOver={bloquear} onPointerMove={bloquear}>
             <sphereGeometry args={[MOON_RADIUS, 128, 128]} />
             {MOON_COLOR_MAP ? (
-              <TexturedSurface colorUrl={MOON_COLOR_MAP} bumpUrl={MOON_BUMP_MAP} />
+              <TexturedSurface
+                colorUrl={MOON_COLOR_MAP}
+                bumpUrl={MOON_BUMP_MAP}
+              />
             ) : (
               <ProceduralSurface />
             )}
           </mesh>
+          {children}
         </group>
       </group>
 
